@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login_register</title>
+</head>
+<body>
+<div>
+<table boder="1">
+    <script type="text/javascript" src="/jquery/jquery.js"></script>
+    <script type="text/javascript">
+
+        var m=10;
+        var n=6;
+        document.write("<tr>");
+        document.write("<td width=\"50px\" align=\"center\"></td>");
+        for(var i=0;i<n;i++)
+        {
+            document.write("<td width=\"50px\" align=\"center\">");
+            var colunm=String.fromCharCode(65+i);
+            document.write(colunm);
+            document.write("</td>");
+        }
+       for(var i=1;i<=m;i++)
+       {
+           document.write("<tr align=\"center\">");
+           document.write("<td width=\"50px\">"+i+"</td>")
+           for(var j=0;j<n;j++){
+               document.write("<td width=\"50px\"> ");
+
+               document.write("free");
+               document.write("</td>");
+           }
+           document.write("</tr>");
+       }
+       document.write("</table>");
+    </script>
+</table>
+</div>
+<div>
+    the total number of seats:<br>
+    the total number of purchased:<br>
+    the total number of reserved:<br>
+    the total number of free ones:<br>
+</div>
+</body>
+</html>

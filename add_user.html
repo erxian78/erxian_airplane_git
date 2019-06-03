@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>login_register</title>
+    <style type="text/css">
+        form {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h1>here is login page</h1>
+    <form action="login-add.php" method="post" onsubmit="return enter()">
+        user_name:<input type="email" name="user_name" id="user_name"><br>
+            password:<input type="password" name="password" id="password"><br>
+            <input type="submit" value="login">
+            <input type="button" value="register" onclick="register();">
+    </form>
+<script type="text/javascript">
+    function enter() {
+        var user_name=document.getElementById("user_name").value;
+        var password=document.getElementById("password").value;
+       // var regex= '/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/';
+       /* if(regex.test($user_name)||user_name.length==0)
+        {
+            alert("please input correcct user_name ");
+            return false;
+        }*/
+//password_filter
+        return true;
+    }
+    function register(){
+        window.location.href="register.html";
+    }
+
+</script>
+</body>
+</html>
