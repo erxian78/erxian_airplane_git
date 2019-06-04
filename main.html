@@ -5,43 +5,48 @@
     <title>login_register</title>
 </head>
 <body>
-<div>
-<table boder="1">
-    <script type="text/javascript" src="/jquery/jquery.js"></script>
-    <script type="text/javascript">
-
-        var m=10;
-        var n=6;
-        document.write("<tr>");
-        document.write("<td width=\"50px\" align=\"center\"></td>");
-        for(var i=0;i<n;i++)
-        {
-            document.write("<td width=\"50px\" align=\"center\">");
-            var colunm=String.fromCharCode(65+i);
-            document.write(colunm);
-            document.write("</td>");
-        }
-       for(var i=1;i<=m;i++)
-       {
-           document.write("<tr align=\"center\">");
-           document.write("<td width=\"50px\">"+i+"</td>")
-           for(var j=0;j<n;j++){
-               document.write("<td width=\"50px\"> ");
-
-               document.write("free");
-               document.write("</td>");
-           }
-           document.write("</tr>");
-       }
-       document.write("</table>");
-    </script>
-</table>
-</div>
-<div>
-    the total number of seats:<br>
-    the total number of purchased:<br>
-    the total number of reserved:<br>
-    the total number of free ones:<br>
-</div>
+<header>
+    <div></div>
+</header>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $.get("seat.php", function (data) {
+            let allResults = JSON.parse(data);
+            let seatResults = JSON.parse(allResults.results);
+            let m = 10;
+            let n = 6;
+            let seatString = "<table border=\"0\"><tr><td width=\"50px\" align=\"center\"></td>";
+            for(let i = 0;i < n;i ++)
+            {
+                seatString += "<td width=\"50px\" align=\"center\">";
+                let column=String.fromCharCode(65+i);
+                seatString += column;
+                seatString += "</td>";
+            }
+            for(let i = 0;i< m;i ++)
+            {
+                seatString += "<tr align=\"center\">";
+                seatString += "<td width=\"50px\">" + i + "</td>";
+                for(let j = 0;j < n;j ++){
+                    seatString += "<td width=\"50px\" class='seat'>";
+                    seatString += seatResults[i * 6 + j];
+                    seatString += "</td>";
+                }
+                seatString += "</tr>";
+            }
+            seatString += "</table>";
+            $("body").append(seatString);
+            let infoString = "<p>the total number of seats:&nbsp;" + seatResults.length + "</p>";
+            infoString += "<p>the total number of purchased:&nbsp;" + allResults.purchase + "</p>";
+            infoString += "<p>the total number of reserved:&nbsp;" + allResults.reserved + "</p>";
+            infoString += "<p>the total number of free:&nbsp;" + allResults.free + "</p>";
+            $("body").append(infoString);
+        });
+        $(".seat").click(function () {
+            
+        })
+    });
+</script>
 </body>
 </html>

@@ -10,10 +10,10 @@ session_start();
 $user_name=$_REQUEST["user_name"];
 $password=md5($_REQUEST["password"]);
 
-$conn=new mysqli("127.0.0.1","root","","mysql");
+$conn=new mysqli("127.0.0.1","root","","airplane");
 if(!$conn)
 {
-    die('connection_error'.$mysql_error());
+    die('connection_error'.mysql_error());
 }
 $dbuser_name=null;
 $dbpwd=null;
