@@ -21,7 +21,7 @@ $result=$conn->query("select * from user_name_pwd where user_name='$user_name';"
  $dbusername=$row["username"];
  $dbpassword=$row["password"];
  }
- if (mysqli_num_rows($result)==0) {//用户名在数据库中不存在时跳回index.html界面
+ if (mysqli_num_rows($result)==0) {//用户名在数据库中不存在时跳回add_user.html界面
  ?>
  <script type="text/javascript">
  alert("user does not exist");
@@ -30,7 +30,7 @@ $result=$conn->query("select * from user_name_pwd where user_name='$user_name';"
  <?php
  }
  else {
- if ($dbpassword!=$password){//当对应密码不对时跳回index.html界面
+ if ($dbpassword!=$password){//当对应密码不对时跳回add_user.html界面
  ?>
  <script type="text/javascript">
  alert("password error");
