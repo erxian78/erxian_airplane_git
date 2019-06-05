@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="main.css" type="text/css" />
     <title>login_register</title>
 </head>
 <body>
@@ -20,16 +21,17 @@
             for(let i = 0;i < n;i ++)
             {
                 seatString += "<td width=\"50px\" align=\"center\">";
-                let column=String.fromCharCode(65+i);
+                let column = String.fromCharCode(65+i);
                 seatString += column;
                 seatString += "</td>";
             }
-            for(let i = 0;i< m;i ++)
+            let i = 0;
+            for(;i < m;i ++)
             {
                 seatString += "<tr align=\"center\">";
                 seatString += "<td width=\"50px\">" + i + "</td>";
                 for(let j = 0;j < n;j ++){
-                    seatString += "<td width=\"50px\" class='seat'>";
+                    seatString += "<td width=\"50px\" class='seat' id=" + i + "-" + j + " onclick='reserveSeat(this)'>";
                     seatString += seatResults[i * 6 + j];
                     seatString += "</td>";
                 }
@@ -43,10 +45,16 @@
             infoString += "<p>the total number of free:&nbsp;" + allResults.free + "</p>";
             $("body").append(infoString);
         });
-        $(".seat").click(function () {
-            
-        })
     });
+
+    reserveSeat = (self) => {
+        console.log("click", self.id);
+        let row = self.id.split('-')[0];
+        let column = self.id.split('-')[1];
+        $.post("update-seat.php", { row: row, column: column, user_id: 1, status: "purchase" }, function (data) {
+            console.log("data", data);
+        });
+    }
 </script>
 </body>
 </html>

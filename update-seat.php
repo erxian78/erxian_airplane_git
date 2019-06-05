@@ -12,10 +12,20 @@ if($result){
         $status=$row["status"];
     }
 }
-if($status=='purchase')//如果座位已被别人购买，则不能预定
-{?>
+if($status =='purchase')//如果座位已被别人购买，则不能预定
+{
+    ?>
     <script type="text/javascript">
         alert("the seat has been purchased!choose another one!");
+        window.location.href="main.html";
+    </script>
+    <?php
+}
+if($status == 'reserved') //如果座位被别人预定，也不能预定
+{
+    ?>
+    <script type="text/javascript">
+        alert("the seat has been reserved ! choose another one!");
         window.location.href="main.html";
     </script>
     <?php
