@@ -10,7 +10,7 @@ session_start();
 $user_name=$_REQUEST["user_name"];
 $password=md5($_REQUEST["password"]);
 
-$conn=new mysqli("127.0.0.1","root","","airplane");
+$conn=new mysqli("127.0.0.1","root","123456","airplane");
 if(!$conn)
 {
     die('connection_error'.mysql_error());

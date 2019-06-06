@@ -6,9 +6,15 @@
     <title>login_register</title>
 </head>
 <body>
-<header>
-    <div></div>
-</header>
+<div class="nav">
+    <div>
+        <p id="welcome">Welcome to seat-reserve system!</p>
+        <a href="add_user.html">Logout</a>
+    </div>
+</div>
+<div class="buy-button">
+    <button>Buy</button>
+</div>
 <script type="text/javascript" src="jquery.min.js"></script>
 <script type="text/javascript">
     $(function(){
@@ -30,7 +36,14 @@
                 seatString += "<tr align=\"center\">";
                 seatString += "<td width=\"50px\">" + i + "</td>";
                 for(let j = 1;j < n;j ++){
-                    seatString += "<td width=\"50px\" class='seat' id=" + i + "-" + j + " onclick='reserveSeat(this)'>";
+                    let status=seatResults[(i - 1) * 6 + j - 1];
+                    var color;
+                    switch (status) {
+                        case "free":color="green";break;
+                        case "purchased":color="red";break;
+                        case "reserved":color="yellow";break;
+                    }
+                    seatString += "<td width=\"50px\" bgcolor="+color+" class='seat' id=" + i + "-" + j + " onclick='reserveSeat(this)'>";
                     seatString += seatResults[(i - 1) * 6 + j - 1];
                     seatString += "</td>";
                 }
@@ -38,24 +51,23 @@
             }
             seatString += "</table>";
             $("body").append(seatString);
-            let infoString = "<p>the total number of seats:&nbsp;" + seatResults.length + "</p>";
+            let infoString = "<div class='info'><p>the total number of seats:&nbsp;" + seatResults.length + "</p>";
             infoString += "<p>the total number of purchased:&nbsp;" + allResults.purchase + "</p>";
             infoString += "<p>the total number of reserved:&nbsp;" + allResults.reserved + "</p>";
-            infoString += "<p>the total number of free:&nbsp;" + allResults.free + "</p>";
+            infoString += "<p>the total number of free:&nbsp;" + allResults.free + "</p></div>";
             $("body").append(infoString);
+            $("#welcome")[0].innerText = "Welcome\n " + allResults.currentUser;
         });
     });
 
     reserveSeat = (self) => {
         let row = self.id.split('-')[0];
         let column = self.id.split('-')[1];
-        console.log('rorrrr', row, column);
         $.ajax({
             url: "update-seat.php",
             type: 'PUT',
             data: { row: row, column: column, user_id: 1, status: "purchase" },
             success: function (data) {
-                console.log("data", data);
                 if(data === 'error'){
                     alert("Sorry, this seat has been purchased or reserved by others");
                 } else if (data === 'success') {
@@ -64,11 +76,11 @@
                 }
             },
             error: function (error) {
-                console.log("data", error);
                 confirm("Sorry, system has occured some error");
             }
         });
     }
 </script>
+
 </body>
 </html>

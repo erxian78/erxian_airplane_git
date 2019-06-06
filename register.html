@@ -12,8 +12,8 @@
 <body>
 <h1>here is register page</h1>
 <form action="register.php" method="post" name="form_request" onsubmit="return check()">
-    user_name:<input type="email" name="user_name" id="user_name"><br>
-    password:<input type="password" name="password" id="password"><br>
+    user_name:<input type="email" name="user_name" id="user_name"><span>Please input your email</span><br>
+    password:<input type="password" name="password" id="password"><span>contain at least one lower-case alphabetic character, and at least one other character that is either alphabetical uppercase or numeric. </span><br>
     assert_password:<input type="password" name="assert_password" id="assert_password"><br>
     <input type="submit" value="register">
 </form>

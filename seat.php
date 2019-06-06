@@ -5,6 +5,8 @@ if(isset($_GET["row"])){
 if(isset($_GET["column"])){
     $column=$_GET["column"];
 }
+session_start();
+$currentUser = $_SESSION["username"];
 $conn=new mysqli("127.0.0.1","root","123456","airplane");
 if(!$conn)
 {
@@ -39,6 +41,7 @@ if($freeResult){
     $countResult["free"] = $freeCount['total'];
 }
 $countResult["results"] = json_encode($data);
+$countResult["currentUser"] = $currentUser;
 echo json_encode($countResult);
 
 $conn->close();

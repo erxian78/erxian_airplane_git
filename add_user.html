@@ -21,12 +21,12 @@
     function enter() {
         var user_name=document.getElementById("user_name").value;
         var password=document.getElementById("password").value;
-       // var regex= '/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/';
-       /* if(regex.test($user_name)||user_name.length==0)
+        var regex= '/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/';
+        if(regex.test($user_name)||user_name.length==0)
         {
             alert("please input correcct user_name ");
             return false;
-        }*/
+        }
 //password_filter
         return true;
     }
