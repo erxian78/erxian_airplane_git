@@ -8,7 +8,7 @@ $user_id=$_PUT["user_id"];
 $row_no=(int)$_PUT["row"];
 $column_no=(int)$_PUT["column"];
 //获得参数
-$conn=new mysqli("127.0.0.1","root","123456","airplane");
+$conn=new mysqli("127.0.0.1","root","","mysql");
 $result=$conn->query("select * from ticket_status where row='$row_no' and `column`='$column_no'");
 $status=null;
 $query_userid = null;

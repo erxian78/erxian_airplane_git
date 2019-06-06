@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="main.css" type="text/css" />
-    <title>login_register</title>
+    <title>main_page</title>
 </head>
 <body>
 <div class="nav">
     <div>
-        <p id="welcome">Welcome to seat-reserve system!</p>
-        <a href="add_user.html">Logout</a>
+        <p id="welcome">Please log in!</p>
+        <a  href="add_user.html">Logout</a>
     </div>
 </div>
 <div class="buy-button">
     <button>Buy</button>
+    <button>Update</button>
 </div>
 <script type="text/javascript" src="jquery.min.js"></script>
 <script type="text/javascript">
@@ -21,6 +22,7 @@
         $.get("seat.php", function (data) {
             let allResults = JSON.parse(data);
             let seatResults = JSON.parse(allResults.results);
+            let user_id=JSON.parse(allResults.user_id);
             let m = 11;
             let n = 7;
             let seatString = "<table border=\"0\"><tr><td width=\"50px\" align=\"center\"></td>";
@@ -36,13 +38,18 @@
                 seatString += "<tr align=\"center\">";
                 seatString += "<td width=\"50px\">" + i + "</td>";
                 for(let j = 1;j < n;j ++){
-                    let status=seatResults[(i - 1) * 6 + j - 1];
-                    var color;
-                    switch (status) {
-                        case "free":color="green";break;
-                        case "purchased":color="red";break;
+                    let color;
+                    switch (seatResults[(i - 1) * 6 + j - 1]) {
+                        case "free":color="#adff2f";break;
+                        case "purchased":color="#ff4500";break;
                         case "reserved":color="yellow";break;
                     }
+                    //座位已经被别人reserved
+                    if(allResults.currentUserId!=user_id[(i - 1) * 6 + j - 1]&&user_id[(i - 1) * 6 + j - 1]>0)
+                    {
+                        color="orange";
+                    }
+                    if(seatResults[(i - 1) * 6 + j - 1])
                     seatString += "<td width=\"50px\" bgcolor="+color+" class='seat' id=" + i + "-" + j + " onclick='reserveSeat(this)'>";
                     seatString += seatResults[(i - 1) * 6 + j - 1];
                     seatString += "</td>";
@@ -56,7 +63,12 @@
             infoString += "<p>the total number of reserved:&nbsp;" + allResults.reserved + "</p>";
             infoString += "<p>the total number of free:&nbsp;" + allResults.free + "</p></div>";
             $("body").append(infoString);
-            $("#welcome")[0].innerText = "Welcome\n " + allResults.currentUser;
+            if(allResults.currentUser) {
+                //从起始位置到终止位置的内容, 但它去除Html标签
+                $("#welcome")[0].innerText = "Welcome\n " + allResults.currentUser;
+                //$("#log_in")[0].innerText = "Log out" ;
+
+            }
         });
     });
 
