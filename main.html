@@ -15,24 +15,23 @@
         $.get("seat.php", function (data) {
             let allResults = JSON.parse(data);
             let seatResults = JSON.parse(allResults.results);
-            let m = 10;
-            let n = 6;
+            let m = 11;
+            let n = 7;
             let seatString = "<table border=\"0\"><tr><td width=\"50px\" align=\"center\"></td>";
-            for(let i = 0;i < n;i ++)
+            for(let i = 0;i < n - 1;i ++)
             {
                 seatString += "<td width=\"50px\" align=\"center\">";
                 let column = String.fromCharCode(65+i);
                 seatString += column;
                 seatString += "</td>";
             }
-            let i = 0;
-            for(;i < m;i ++)
+            for(let i = 1;i < m;i ++)
             {
                 seatString += "<tr align=\"center\">";
                 seatString += "<td width=\"50px\">" + i + "</td>";
-                for(let j = 0;j < n;j ++){
+                for(let j = 1;j < n;j ++){
                     seatString += "<td width=\"50px\" class='seat' id=" + i + "-" + j + " onclick='reserveSeat(this)'>";
-                    seatString += seatResults[i * 6 + j];
+                    seatString += seatResults[(i - 1) * 6 + j - 1];
                     seatString += "</td>";
                 }
                 seatString += "</tr>";
@@ -48,11 +47,26 @@
     });
 
     reserveSeat = (self) => {
-        console.log("click", self.id);
         let row = self.id.split('-')[0];
         let column = self.id.split('-')[1];
-        $.post("update-seat.php", { row: row, column: column, user_id: 1, status: "purchase" }, function (data) {
-            console.log("data", data);
+        console.log('rorrrr', row, column);
+        $.ajax({
+            url: "update-seat.php",
+            type: 'PUT',
+            data: { row: row, column: column, user_id: 1, status: "purchase" },
+            success: function (data) {
+                console.log("data", data);
+                if(data === 'error'){
+                    alert("Sorry, this seat has been purchased or reserved by others");
+                } else if (data === 'success') {
+                    confirm("You have reserve this seat successfully");
+                    window.location.href="main.html";
+                }
+            },
+            error: function (error) {
+                console.log("data", error);
+                confirm("Sorry, system has occured some error");
+            }
         });
     }
 </script>

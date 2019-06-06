@@ -17,14 +17,14 @@ if($result) {
     $data = array();
     while($row=mysqli_fetch_array($result))
     {
-        $data[] = $row["C1"];
+        $data[] = $row["status"];
     }
 }
 
 //各种状态的座位的count
-$purchaseResult = $conn -> query("SELECT COUNT(*) AS total FROM ticket_status WHERE C1=\"purchase\"");
-$reservedResult = $conn -> query("SELECT COUNT(*) AS total FROM ticket_status WHERE C1=\"reserved\"");
-$freeResult = $conn -> query("SELECT COUNT(*) AS total FROM ticket_status WHERE C1=\"free\"");
+$purchaseResult = $conn -> query("SELECT COUNT(*) AS total FROM ticket_status WHERE status=\"purchase\"");
+$reservedResult = $conn -> query("SELECT COUNT(*) AS total FROM ticket_status WHERE status=\"reserved\"");
+$freeResult = $conn -> query("SELECT COUNT(*) AS total FROM ticket_status WHERE status=\"free\"");
 
 if($purchaseResult){
     $purchaseCount = mysqli_fetch_array($purchaseResult);
