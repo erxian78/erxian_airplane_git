@@ -33,7 +33,19 @@ if($user_id!=$query_userid){
     {
         echo "success";
     }
-}/*
+}
+//如果座位已经被当前用户预定，则释放座位，状态改为free
+//如果座位被其他用户预订，或者之前没有被预订过，则更新为此reserved状态为此用户
+if($user_id==$query_userid&&$status=='reserved'){
+    $sql="UPDATE ticket_status SET status='free',user_id=NULL where row='$row_no' and `column`='$column_no'";
+    $result=$conn->query($sql);
+    $conn->close();
+    if($result)
+    {
+        echo "success";
+    }
+}
+/*
 else{
     $sql='UPDATE ticket_status SET status="purchased",user_id=$user_id where row=$row and column=$column ';
     $result=$conn->query($sql);
