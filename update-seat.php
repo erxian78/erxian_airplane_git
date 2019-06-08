@@ -1,12 +1,12 @@
 <?php
 //将作为预定，改变座位状态 如果是free，则变成reserved,如果被其他user reserved，则被此操作用户提示reserved
-$_PUT = array();
-if ('PUT' == $_SERVER['REQUEST_METHOD']) {
-    parse_str(file_get_contents('php://input'), $_PUT);
+$_POST = array();
+if ('POST' == $_SERVER['REQUEST_METHOD']) {
+    parse_str(file_get_contents('php://input'), $_POST);
 }
-$user_id=$_PUT["user_id"];
-$row_no=(int)$_PUT["row"];
-$column_no=(int)$_PUT["column"];
+$user_id=$_POST["user_id"];
+$row_no=(int)$_POST["row"];
+$column_no=(int)$_POST["column"];
 //获得参数
 session_start();
 $currentUser = $_SESSION["username"];
@@ -19,7 +19,7 @@ if(isset($_SESSION['expiretime'])) {
         $_SESSION['expiretime'] = time() + 120000;
     }
 }
-$conn=new mysqli("127.0.0.1","root","123456","airplane");
+$conn=new mysqli("127.0.0.1","root","","mysql");
 $result=$conn->query("select * from ticket_status where row='$row_no' and `column`='$column_no'");
 $status=null;
 $query_userid = null;
@@ -38,12 +38,14 @@ if($status =='purchase')//如果座位已被别人购买，则不能预定
 //如果座位被其他用户预订，或者之前没有被预订过，则更新为此reserved状态为此用户
 if($user_id!=$query_userid){
     $sql="UPDATE ticket_status SET status='reserved',user_id='$user_id' where row='$row_no' and `column`='$column_no'";
+    echo $sql;
     $result=$conn->query($sql);
     $conn->close();
     if($result)
     {
         echo "success";
     }
+    else echo"failure";
 }
 //如果座位已经被当前用户预定，则释放座位，状态改为free
 //如果座位被其他用户预订，或者之前没有被预订过，则更新为此reserved状态为此用户
@@ -55,6 +57,7 @@ if($user_id==$query_userid&&$status=='reserved'){
     {
         echo "success";
     }
+    else echo"failure";
 }
 /*
 else{

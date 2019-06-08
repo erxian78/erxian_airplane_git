@@ -52,10 +52,10 @@
                     //座位已经被别人reserved
                     if(allResults.currentUserId != user_id[currentIndex] && user_id[currentIndex] > 0 && seatResults[currentIndex] != "purchase") {
                         color = "#ffa726";
-                        cursor = "not-allowed";
+                        //cursor = "not-allowed";
                     }
                     if(seatResults[currentIndex]){
-                        seatString += "<td width=\"50px\" height=\"30px\" style='cursor: " + cursor + "' bgcolor=" + color + " class='seat' id=" + i + "-" + j + " onclick='reserveSeat(this)'></td>";
+                        seatString += "<td width=\"50px\" height=\"30px\" style='cursor: " + cursor + "' bgcolor=" + color + " class='seat' id=" + i + "-" + j +"-"+allResults.currentUserId+ " onclick='reserveSeat(this)'></td>";
                     }
                 }
                 seatString += "</tr>";
@@ -78,19 +78,26 @@
     reserveSeat = (self) => {
         let row = self.id.split('-')[0];
         let column = self.id.split('-')[1];
+        let user_id=self.id.split('-')[2];
         let bgColor = $(`#${self.id}`)[0].bgColor;
-        if (bgColor === '#ef5350' || bgColor === '#ffa726'){
+       // if (bgColor === '#ef5350' || bgColor === '#ffa726'){
+        if (bgColor === '#ef5350' ){
             return;
         }
         $.ajax({
             url: "update-seat.php",
-            type: 'PUT',
-            data: { row: row, column: column, user_id: 1, status: "purchase" },
+            type: 'POST',
+            data: { row: row, column: column, user_id: user_id , status: "reserved" },
             success: function (data) {
                 if(data === 'error'){
                     confirm("Sorry, this seat has been purchased or reserved by others");
                 } else if (data === 'success') {
-                    $(`#${self.id}`)[0].bgColor = '#ffee58';
+                    if( $(`#${self.id}`)[0].bgColor == '#ffee58')
+                    {
+                        $(`#${self.id}`)[0].bgColor = '#66bb6a';
+                    }
+                    else
+                        $(`#${self.id}`)[0].bgColor = '#ffee58';
                 }
             },
             error: function (error) {
@@ -101,6 +108,23 @@
 
     buySeat = () => {
         console.log("you are buying");
+        $.ajax({
+            url:"buy-seat.php",
+            type: 'POST',
+            data: { user_id: 20,  reserved_num:1 },
+            success: function (data) {
+                if(data === 'error'){
+                    confirm("Sorry, your buying request has been rejected");
+                } else if (data === 'success') {
+                    confirm("buying success!");
+                   window.location.href='main.html';
+                }
+            },
+            error: function (error) {
+                confirm("Sorry, system has occured some error");
+            }
+
+        });
     }
 </script>
 <div class="operations">
