@@ -2,25 +2,36 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>login_register</title>
-    <style type="text/css">
-        form {
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="add-user.css" />
+    <title>Login</title>
 </head>
 <body>
-<h1>here is login page</h1>
+<div class="welcome">
+    <h1>Welcome to seat-reserve system!</h1>
+</div>
+<div class="login-form">
     <form action="login-add.php" method="post" onsubmit="return enter()">
-        user_name:<input type="email" name="user_name" id="user_name"><br>
-            password:<input type="password" name="password" id="password"><br>
-            <input type="submit" value="login">
-            <input type="button" value="register" onclick="register();">
+        <p>
+            <span>Username (email)</span><input type="email" name="user_name" id="user_name">
+        </p>
+        <p>
+            <span>Password</span><input type="password" name="password" id="password">
+        </p>
+        <div style="margin-top:60px;padding-left: 30px">
+            <input type="submit" value="Login" class="submit-button" id="submit-button">
+            <br />
+            <a href="register.html">Register</a>
+        </div>
     </form>
+</div>
+
 <script type="text/javascript">
     function enter() {
         var user_name=document.getElementById("user_name").value;
         var password=document.getElementById("password").value;
+        if (user_name == '' || password == ''){
+            return false;
+        }
         var regex= '/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/';
         if(regex.test($user_name)||user_name.length==0)
         {
@@ -29,9 +40,6 @@
         }
 //password_filter
         return true;
-    }
-    function register(){
-        window.location.href="register.html";
     }
 
 </script>

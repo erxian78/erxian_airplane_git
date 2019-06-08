@@ -7,7 +7,16 @@ if(isset($_GET["column"])){
 }
 session_start();
 $currentUser = $_SESSION["username"];
-$conn=new mysqli("127.0.0.1","root","","mysql");
+if(isset($_SESSION['expiretime'])) {
+    if($_SESSION['expiretime'] < time()) {
+        unset($_SESSION['expiretime']);
+        header('Location: logout.php?TIMEOUT');
+        exit(0);
+    } else {
+        $_SESSION['expiretime'] = time() + 120000;
+    }
+}
+$conn=new mysqli("127.0.0.1","root","123456","airplane");
 if(!$conn)
 {
     die('connection_error'.mysqli_error());
@@ -40,7 +49,7 @@ if($currentUserIdResult) {
 }
 
 //各种状态的座位的count
-$purchaseResult = $conn -> query("SELECT COUNT(*) AS total FROM ticket_status WHERE status=\"purchased\"");
+$purchaseResult = $conn -> query("SELECT COUNT(*) AS total FROM ticket_status WHERE status=\"purchase\"");
 $reservedResult = $conn -> query("SELECT COUNT(*) AS total FROM ticket_status WHERE status=\"reserved\"");
 $freeResult = $conn -> query("SELECT COUNT(*) AS total FROM ticket_status WHERE status=\"free\"");
 

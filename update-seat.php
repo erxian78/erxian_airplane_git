@@ -8,7 +8,18 @@ $user_id=$_PUT["user_id"];
 $row_no=(int)$_PUT["row"];
 $column_no=(int)$_PUT["column"];
 //获得参数
-$conn=new mysqli("127.0.0.1","root","","mysql");
+session_start();
+$currentUser = $_SESSION["username"];
+if(isset($_SESSION['expiretime'])) {
+    if($_SESSION['expiretime'] < time()) {
+        unset($_SESSION['expiretime']);
+        header('Location: logout.php?TIMEOUT');
+        exit(0);
+    } else {
+        $_SESSION['expiretime'] = time() + 120000;
+    }
+}
+$conn=new mysqli("127.0.0.1","root","123456","airplane");
 $result=$conn->query("select * from ticket_status where row='$row_no' and `column`='$column_no'");
 $status=null;
 $query_userid = null;

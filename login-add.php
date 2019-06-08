@@ -9,7 +9,7 @@
 
 $user_name=$_REQUEST["user_name"];
 $password=md5($_REQUEST["password"]);
-$conn=new mysqli("127.0.0.1","root","","mysql");
+$conn=new mysqli("127.0.0.1","root","123456","airplane");
 if(!$conn)
 {
     die('connection_error'.mysql_error());
@@ -42,7 +42,6 @@ $result=$conn->query("select * from user_name_pwd where user_name='$user_name';"
  $lifeTime = 2 * 60;
  session_set_cookie_params($lifeTime);
  session_start();
- echo 'username'.$dbusername;
  $_SESSION["username"]=$dbusername;
  $_SESSION["code"]=mt_rand(0, 100000);//给session附一个随机值，防止用户直接通过调用界面访问welcome.php
 
