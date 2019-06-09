@@ -19,7 +19,7 @@ if(isset($_SESSION['expiretime'])) {
         $_SESSION['expiretime'] = time() + 120000;
     }
 }
-$conn=new mysqli("127.0.0.1","root","123456","airplane");
+$conn=new mysqli("127.0.0.1","root","","mysql");
 $result=$conn->query("select * from ticket_status where row='$row_no' and `column`='$column_no'");
 $status=null;
 $query_userid = null;
@@ -44,11 +44,11 @@ if($user_id!=$query_userid){
     {
         echo "success";
     }
-    else echo "failure";
+    else echo "error";
 }
 //如果座位已经被当前用户预定，则释放座位，状态改为free
 //如果座位被其他用户预订，或者之前没有被预订过，则更新为此reserved状态为此用户
-if($user_id==$query_userid&&$status=='reserved'){
+else if($user_id==$query_userid && $status=='reserved'){
     $sql="UPDATE ticket_status SET status='free',user_id=NULL where row='$row_no' and `column`='$column_no'";
     $result=$conn->query($sql);
     $conn->close();
@@ -56,7 +56,7 @@ if($user_id==$query_userid&&$status=='reserved'){
     {
         echo "success";
     }
-    else echo"failure";
+    else echo"error";
 }
 /*
 else{

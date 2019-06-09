@@ -14,6 +14,8 @@
 </div>
 <script type="text/javascript" src="jquery.min.js"></script>
 <script type="text/javascript">
+    let self_reserve_cnt = 0;
+    let current_user_id=0;
     $(function(){
         $.get("seat.php", function (data) {
             let allResults = JSON.parse(data);
@@ -21,6 +23,7 @@
             let user_id = JSON.parse(allResults.user_id);
             let m = 11;
             let n = 7;
+            current_user_id=allResults.currentUserId;
             let seatString = "<table border=\"0\"><tr><td width=\"50px\" align=\"center\"></td>";
             for(let i = 0;i < n - 1;i ++)
             {
@@ -47,11 +50,13 @@
                             break;
                         case "reserved":
                             color = "#ffee58";
+                            self_reserve_cnt ++;
                             break;
                     }
                     //座位已经被别人reserved
                     if(allResults.currentUserId != user_id[currentIndex] && user_id[currentIndex] > 0 && seatResults[currentIndex] != "purchase") {
                         color = "#ffa726";
+                        self_reserve_cnt --;
                         //cursor = "not-allowed";
                     }
                     if(seatResults[currentIndex]){
@@ -92,13 +97,25 @@
                     confirm("Sorry, this seat has been purchased or reserved by others");
                 } else if (data === 'success') {
                     const reserveCount = parseInt($('.info > p > span')[2].innerText);
+                    const freeCount = parseInt($('.info > p > span')[3].innerText);
                     if(bgColor == '#ffee58') {
+                        self_reserve_cnt --;
                         $(`#${self.id}`)[0].bgColor = '#66bb6a';
                         $('.info > p > span')[2].innerText = reserveCount - 1;
+                        $('.info > p > span')[3].innerText = freeCount + 1;
+
+                    }
+                    else if(bgColor == '#ffa726' ){
+                        self_reserve_cnt ++;
+                        $(`#${self.id}`)[0].bgColor = '#ffee58';
+                       // $('.info > p > span')[2].innerText = reserveCount + 1;
+                        // $('.info > p > span')[3].innerText = freeCount - 1;
                     }
                     else{
+                        self_reserve_cnt ++;
                         $(`#${self.id}`)[0].bgColor = '#ffee58';
                         $('.info > p > span')[2].innerText = reserveCount + 1;
+                        $('.info > p > span')[3].innerText = freeCount - 1;
                     }
                 }
             },
@@ -109,22 +126,28 @@
     }
 
     buySeat = () => {
+        if(self_reserve_cnt == 0){
+            confirm("Please select the seat you want to reserve first!");
+            return;
+        }
         $.ajax({
             url:"buy-seat.php",
             type: 'POST',
-            data: { user_id: 20,  reserved_num:1 },
+            data: { user_id: current_user_id,  reserved_num: self_reserve_cnt},
             success: function (data) {
                 if(data === 'error'){
-                    confirm("Sorry, your buying request has been rejected");
-                } else if (data === 'success') {
-                    confirm("buying success!");
-                   window.location.href='main.html';
+                    confirm("buying request has been rejected!");
+                    window.location.href = 'main.html';
+                }
+                else if (data === 'success') {
+                    confirm("buying success！");
+                    window.location.href = 'main.html';
                 }
             },
             error: function (error) {
                 confirm("Sorry, system has occured some error");
+                window.location.href='main.html';
             }
-
         });
     }
 </script>

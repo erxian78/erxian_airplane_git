@@ -33,9 +33,10 @@ if($result) {
 
 if($cnt!=$reserved_num)
 {
- echo "error";
- $conn->close();
- return;
+    $result=$conn->query("UPDATE ticket_status SET status='free',user_id=NULL where status='reserved' and user_id='$user_id'");
+    echo "error";
+    $conn->close();
+    return;
 }
 $result=$conn->query("UPDATE ticket_status SET status='purchase',user_id='$user_id' where status='reserved'");
 if($result)
@@ -43,5 +44,6 @@ if($result)
     echo "success";
 }
 else echo"error";
+
 $conn->close();
 ?>
