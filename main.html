@@ -9,7 +9,7 @@
 <div class="nav">
     <div>
         <p id="welcome">Please sign in!</p>
-        <a onclick="logout()" href="javascript:void(0);">Logout</a>
+        <a id="logout" onclick="logout()" href="javascript:void(0);">Logout</a>
     </div>
 </div>
 <script type="text/javascript" src="jquery.min.js"></script>
@@ -82,6 +82,10 @@
 
     logout = () => {
         current_user_id = null;
+        $("#welcome")[0].innerText = "Please sign in!\n" ;
+        $("#logout").remove();
+        $(".nav").append("<a id=\"login\" href=\"add_user.html\">Login</a>");
+
     };
 
     reserveSeat = (self) => {
