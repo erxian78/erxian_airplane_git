@@ -62,10 +62,10 @@
             }
             seatString += "</table>";
             $("body").append(seatString);
-            let infoString = "<div class='info'><p>The total number of seats:&nbsp;" + seatResults.length + "</p>";
-            infoString += "<p>The total number of purchased:&nbsp;" + allResults.purchase + "</p>";
-            infoString += "<p>The total number of reserved:&nbsp;" + allResults.reserved + "</p>";
-            infoString += "<p>The total number of free:&nbsp;" + allResults.free + "</p></div>";
+            let infoString = "<div class='info'><p>The total number of seats:&nbsp;<span>" + seatResults.length  + "</span></p>";
+            infoString += "<p>The total number of purchased:&nbsp;<span>" + allResults.purchase + "</span></p>";
+            infoString += "<p>The total number of reserved:&nbsp;<span>" + allResults.reserved + "</span></p>";
+            infoString += "<p>The total number of free:&nbsp;<span>" + allResults.free + "</span></p></div>";
             $("body").append(infoString);
             if(allResults.currentUser) {
                 //从起始位置到终止位置的内容, 但它去除Html标签
@@ -80,7 +80,6 @@
         let column = self.id.split('-')[1];
         let user_id=self.id.split('-')[2];
         let bgColor = $(`#${self.id}`)[0].bgColor;
-       // if (bgColor === '#ef5350' || bgColor === '#ffa726'){
         if (bgColor === '#ef5350' ){
             return;
         }
@@ -92,12 +91,15 @@
                 if(data === 'error'){
                     confirm("Sorry, this seat has been purchased or reserved by others");
                 } else if (data === 'success') {
-                    if( $(`#${self.id}`)[0].bgColor == '#ffee58')
-                    {
+                    const reserveCount = parseInt($('.info > p > span')[2].innerText);
+                    if(bgColor == '#ffee58') {
                         $(`#${self.id}`)[0].bgColor = '#66bb6a';
+                        $('.info > p > span')[2].innerText = reserveCount - 1;
                     }
-                    else
+                    else{
                         $(`#${self.id}`)[0].bgColor = '#ffee58';
+                        $('.info > p > span')[2].innerText = reserveCount + 1;
+                    }
                 }
             },
             error: function (error) {
@@ -107,7 +109,6 @@
     }
 
     buySeat = () => {
-        console.log("you are buying");
         $.ajax({
             url:"buy-seat.php",
             type: 'POST',
