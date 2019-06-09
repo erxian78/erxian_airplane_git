@@ -9,7 +9,7 @@
 <div class="nav">
     <div>
         <p id="welcome">Please sign in!</p>
-        <a href="add_user.html">Logout</a>
+        <a onclick="logout()" href="javascript:void(0);">Logout</a>
     </div>
 </div>
 <script type="text/javascript" src="jquery.min.js"></script>
@@ -23,7 +23,7 @@
             let user_id = JSON.parse(allResults.user_id);
             let m = 11;
             let n = 7;
-            current_user_id=allResults.currentUserId;
+            current_user_id = allResults.currentUserId;
             let seatString = "<table border=\"0\"><tr><td width=\"50px\" align=\"center\"></td>";
             for(let i = 0;i < n - 1;i ++)
             {
@@ -80,12 +80,19 @@
         });
     });
 
+    logout = () => {
+        current_user_id = null;
+    };
+
     reserveSeat = (self) => {
+        if (current_user_id == null) {
+            return;
+        }
         let row = self.id.split('-')[0];
         let column = self.id.split('-')[1];
-        let user_id=self.id.split('-')[2];
+        let user_id = self.id.split('-')[2];
         let bgColor = $(`#${self.id}`)[0].bgColor;
-        if (bgColor === '#ef5350' ){
+        if (bgColor === '#ef5350'){
             return;
         }
         $.ajax({
