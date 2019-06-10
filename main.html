@@ -9,7 +9,8 @@
 <div class="nav">
     <div>
         <p id="welcome">Please sign in!</p>
-        <a id="logout" onclick="logout()" href="javascript:void(0);">Logout</a>
+        <a id="login"  href="add_user.html">Login</a>
+
     </div>
 </div>
 <script type="text/javascript" src="jquery.min.js"></script>
@@ -75,7 +76,9 @@
             if(allResults.currentUser) {
                 //从起始位置到终止位置的内容, 但它去除Html标签
                 $("#welcome")[0].innerText = "Welcome\n " + allResults.currentUser;
-                //$("#log_in")[0].innerText = "Log out" ;
+                $("#login").remove();
+                $(".nav").append("<a id=\"logout\" onclick=\"logout()\" href=\"javascript:void(0);\">Logout</a>");
+
             }
         });
     });
@@ -85,11 +88,12 @@
         $("#welcome")[0].innerText = "Please sign in!\n" ;
         $("#logout").remove();
         $(".nav").append("<a id=\"login\" href=\"add_user.html\">Login</a>");
-
+        href="clear-session.php";
     };
 
     reserveSeat = (self) => {
         if (current_user_id == null) {
+            confirm("Please log in first!");
             return;
         }
         let row = self.id.split('-')[0];
@@ -106,6 +110,7 @@
             success: function (data) {
                 if(data === 'error'){
                     confirm("Sorry, this seat has been purchased or reserved by others");
+                    $(`#${self.id}`)[0].bgColor = '#ef5350';
                 } else if (data === 'success') {
                     const reserveCount = parseInt($('.info > p > span')[2].innerText);
                     const freeCount = parseInt($('.info > p > span')[3].innerText);
@@ -137,6 +142,11 @@
     }
 
     buySeat = () => {
+        if(current_user_id==null)
+        {
+            confirm("Please log in first!");
+            return;
+        }
         if(self_reserve_cnt == 0){
             confirm("Please select the seat you want to reserve first!");
             return;
@@ -148,12 +158,17 @@
             success: function (data) {
                 if(data === 'error'){
                     confirm("buying request has been rejected!");
-                    window.location.href = 'main.html';
+                   // window.location.href = 'main.html';
                 }
                 else if (data === 'success') {
                     confirm("buying success！");
-                    window.location.href = 'main.html';
+                    //window.location.href = 'main.html';
                 }
+                else if(data === 'buying_by_other')
+                {
+                    confirm("Sorry,the seat your want to buy has been token by others!");
+                }
+                window.location.href = 'main.html';
             },
             error: function (error) {
                 confirm("Sorry, system has occured some error");

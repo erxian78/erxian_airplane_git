@@ -34,7 +34,7 @@ if($result) {
 if($cnt!=$reserved_num)
 {
     $result=$conn->query("UPDATE ticket_status SET status='free',user_id=NULL where status='reserved' and user_id='$user_id'");
-    echo "error";
+    echo "buying_by_other";
     $conn->close();
     return;
 }
