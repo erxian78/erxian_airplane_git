@@ -18,11 +18,11 @@ if(isset($_SESSION['expiretime'])) {
         exit;
     }
     else {
-        $_SESSION['expiretime'] = time() + 2;
+        $_SESSION['expiretime'] = time() + 120;
     }
 }
 else {
-    $_SESSION['expiretime'] = time() + 2;
+    $_SESSION['expiretime'] = time() + 120;
 }
 $conn=new mysqli("127.0.0.1","root","","mysql");
 $result=$conn->query("select * from ticket_status where row='$row_no' and `column`='$column_no'");
@@ -63,23 +63,4 @@ else if($user_id==$query_userid && $status=='reserved'){
     }
     else echo"error";
 }
-/*
-else{
-    $sql='UPDATE ticket_status SET status="purchased",user_id=$user_id where row=$row and column=$column ';
-    $result=$conn->query($sql);
-    $conn->close();
-    if(!$result)
-    {?>
-        <script type="text/javascript">
-            alert("change status failed!");
-            window.location.href="main.html";
-        </script>
-        <?php
-    }?>
-    <script type="text/javascript">
-        alert("change status success!");
-        window.location.href="main.html";
-    </script>
-    <?php
-}*/
 ?>

@@ -1,6 +1,5 @@
 <?php
 session_start();
-$currentUser = $_SESSION["username"];
 if(isset($_SESSION['expiretime'])) {
     if($_SESSION['expiretime'] < time()) {
         unset($_SESSION['expiretime']);
@@ -29,11 +28,8 @@ if(!$conn)
 //
 $result=$conn->query("select count(*)  as cnt from ticket_status where user_id='$user_id' and status='reserved'");
 if($result) {
-
-    while($row=mysqli_fetch_array($result))
-    {
-        $cnt = $row["cnt"];
-    }
+    $row=mysqli_fetch_array($result);
+    $cnt = $row["cnt"];
 }
 
 if($cnt!=$reserved_num)
@@ -43,7 +39,7 @@ if($cnt!=$reserved_num)
     $conn->close();
     return;
 }
-$result=$conn->query("UPDATE ticket_status SET status='purchase',user_id='$user_id' where status='reserved'");
+$result=$conn->query("UPDATE ticket_status SET status='purchase' where user_id='$user_id' and status='reserved'");
 if($result)
 {
     echo "success";

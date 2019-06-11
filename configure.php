@@ -5,8 +5,8 @@
  * Date: 2019-06-10
  * Time: 22:53
  */
-$m=10;
-$n=6;
+$m=11;
+$n=7;
 $current_m=10;
 $current_n=6;
 $conn=mysqli_connect("127.0.0.1","root","","mysql");

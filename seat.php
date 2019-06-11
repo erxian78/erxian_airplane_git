@@ -28,24 +28,18 @@ if(!$conn)
     die('connection_error'.mysqli_error());
 }
 //查找座位状态
-$result=$conn->query("select * from ticket_status");
+$result=$conn->query("select status,case when user_id is NULL then -1 else user_id end AS user_id_no_null from ticket_status");
 $status=null;
 if($result) {
     $data = array();
+    $user_id_array=array();
     while($row=mysqli_fetch_array($result))
     {
         $data[] = $row["status"];
-    }
-}
-//user_id若为null,则改变成-1
-$user_id_result=$conn->query("select case when user_id is NULL then -1 else user_id end AS user_id_no_null from ticket_status");
-if($user_id_result) {
-    $user_id_array=array();
-    while($row=mysqli_fetch_array($user_id_result))
-    {
         $user_id_array[] = $row["user_id_no_null"];
     }
 }
+
 
 //获得currentUser的user_id
 if(isset($_SESSION['username'])) {

@@ -102,6 +102,7 @@
                 type:'POST',
             }
         )
+        window.location.href="main.html";
     };
 
     reserveSeat = (self) => {
@@ -130,6 +131,7 @@
                     const reserveCount = parseInt($('.info > p > span')[2].innerText);
                     const freeCount = parseInt($('.info > p > span')[3].innerText);
                     if(bgColor == '#ffee58') {
+                        alert("free the seat successfully");
                         self_reserve_cnt --;
                         $(`#${self.id}`)[0].bgColor = '#66bb6a';
                         $('.info > p > span')[2].innerText = reserveCount - 1;
@@ -137,12 +139,14 @@
 
                     }
                     else if(bgColor == '#ffa726' ){
+                        alert("reserve the seat successfully");
                         self_reserve_cnt ++;
                         $(`#${self.id}`)[0].bgColor = '#ffee58';
                        // $('.info > p > span')[2].innerText = reserveCount + 1;
                         // $('.info > p > span')[3].innerText = freeCount - 1;
                     }
                     else{
+                        alert("reserve the seat successfully");
                         self_reserve_cnt ++;
                         $(`#${self.id}`)[0].bgColor = '#ffee58';
                         $('.info > p > span')[2].innerText = reserveCount + 1;
@@ -208,23 +212,6 @@
             return;
         }
         window.location.href="main.html";
-        // $.ajax(
-        //     {
-        //         url:"update_button.php",
-        //         type:'POST',
-        //         success:function(data){
-        //             if (data === 'timeout') {
-        //                 alert("timeout for the user!");
-        //                 window.location.href="add_user.html";
-        //             }
-        //             if(data==='success')
-        //             {
-        //                 window.location.href="main.html";
-        //             }
-        //         }
-        //}
-
-        //);
     }
 
 
