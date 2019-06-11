@@ -1,9 +1,7 @@
 <?php
 //将作为预定，改变座位状态 如果是free，则变成reserved,如果被其他user reserved，则被此操作用户提示reserved
 $_POST = array();
-if ('POST' == $_SERVER['REQUEST_METHOD']) {
-    parse_str(file_get_contents('php://input'), $_POST);
-}
+
 $user_id=$_POST["user_id"];
 $row_no=(int)$_POST["row"];
 $column_no=(int)$_POST["column"];

@@ -17,8 +17,15 @@
 </div>
 <script type="text/javascript" src="jquery.min.js"></script>
 <script type="text/javascript">
+    $.ajax({
+        url: "configure.php",
+        type:'POST'
+        }
+    )
     let self_reserve_cnt = 0;
     let current_user_id=0;
+    let m = 11;
+    let n = 7;
     $(function(){
         $.get("seat.php", function (data) {
             let allResults = JSON.parse(data);
@@ -30,8 +37,6 @@
             }
             let seatResults = allResults.results;
             let user_id = allResults.user_id;
-            let m = 11;
-            let n = 7;
             current_user_id = allResults.currentUserId;
             let seatString = "<table border=\"0\"><tr><td width=\"50px\" align=\"center\"></td>";
             for(let i = 0;i < n - 1;i ++)
@@ -213,8 +218,6 @@
         }
         window.location.href="main.html";
     }
-
-
 
 </script>
 <div class="operations">
