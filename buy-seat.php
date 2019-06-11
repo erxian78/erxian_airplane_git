@@ -4,11 +4,16 @@ $currentUser = $_SESSION["username"];
 if(isset($_SESSION['expiretime'])) {
     if($_SESSION['expiretime'] < time()) {
         unset($_SESSION['expiretime']);
-        header('Location: logout.php?TIMEOUT');
-        exit(0);
+        //header('Location: logout.php?TIMEOUT');
+        echo "timeout";
+        session_destroy();
+        exit;
     } else {
-        $_SESSION['expiretime'] = time() + 120000;
+        $_SESSION['expiretime'] = time() + 120;
     }
+}
+else {
+    $_SESSION['expiretime'] = time() + 120;
 }
 $_POST = array();
 if ('POST' == $_SERVER['REQUEST_METHOD']) {

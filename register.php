@@ -24,6 +24,7 @@ while($row=mysqli_fetch_array($result))
     $dbpwd=$row["password"];
 }
 if(!is_null($dbuser_name)){
+    $conn->close();
     ?>
 <script type="text/javascript">
     alert("user has already exist ");
@@ -33,7 +34,6 @@ if(!is_null($dbuser_name)){
 }
 else {
     $conn->query("insert into user_name_pwd values('$user_name','$password',NULL)") or die("insert into db error" . mysqli_error());
-    session_start();
     $_SESSION["username"]=$user_name;
 }
 $conn->close();

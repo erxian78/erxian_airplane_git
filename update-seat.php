@@ -13,11 +13,16 @@ $currentUser = $_SESSION["username"];
 if(isset($_SESSION['expiretime'])) {
     if($_SESSION['expiretime'] < time()) {
         unset($_SESSION['expiretime']);
-        header('Location: logout.php?TIMEOUT');
-        exit(0);
-    } else {
-        $_SESSION['expiretime'] = time() + 120000;
+        //header('Location: logout.php?TIMEOUT');
+        echo "timeout";
+        exit;
     }
+    else {
+        $_SESSION['expiretime'] = time() + 2;
+    }
+}
+else {
+    $_SESSION['expiretime'] = time() + 2;
 }
 $conn=new mysqli("127.0.0.1","root","","mysql");
 $result=$conn->query("select * from ticket_status where row='$row_no' and `column`='$column_no'");

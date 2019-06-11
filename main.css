@@ -4,7 +4,11 @@ body {
     padding: 0;
 }
 
-
+.header{
+    padding: 5px;
+    background-color:rgba(0,188,212,0.5);
+    text-align: center;
+}
 .seat {
     padding: 5px;
     border-radius: 10px;
@@ -12,7 +16,7 @@ body {
 .nav {
     width: 200px;
     height: 100%;
-    position: fixed;
+    position: absolute;
     left: 0;
     padding: 20px;
     background-color: rgba(0,188,212,0.5);

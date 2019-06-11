@@ -6,16 +6,22 @@ if(isset($_GET["column"])){
     $column=$_GET["column"];
 }
 session_start();
-$currentUser = $_SESSION["username"];
-if(isset($_SESSION['expiretime'])) {
-    if($_SESSION['expiretime'] < time()) {
-        unset($_SESSION['expiretime']);
-        header('Location: logout.php?TIMEOUT');
-        exit(0);
+if(isset($_SESSION['username'])) {
+    $currentUser = $_SESSION["username"];
+    if (isset($_SESSION['expiretime'])) {
+        if ($_SESSION['expiretime'] < time()) {
+            unset($_SESSION['expiretime']);
+            echo json_encode(["timeout" => true]);
+            session_destroy();
+            exit;
+        } else {
+            $_SESSION['expiretime'] = time() + 120;
+        }
     } else {
-        $_SESSION['expiretime'] = time() + 120000;
+        $_SESSION['expiretime'] = time() + 120;
     }
 }
+
 $conn=new mysqli("127.0.0.1","root","","mysql");
 if(!$conn)
 {
@@ -42,16 +48,19 @@ if($user_id_result) {
 }
 
 //获得currentUser的user_id
-$currentUserIdResult = $conn -> query("SELECT *  FROM user_name_pwd WHERE user_name='$currentUser'");
-if($currentUserIdResult) {
-    $UserId = mysqli_fetch_array($currentUserIdResult);
-    $countResult["currentUserId"]=$UserId['id'];
+if(isset($_SESSION['username'])) {
+    $currentUserIdResult = $conn->query("SELECT *  FROM user_name_pwd WHERE user_name='$currentUser'");
+    if ($currentUserIdResult) {
+        $UserId = mysqli_fetch_array($currentUserIdResult);
+        $countResult["currentUserId"] = $UserId['id'];
+    }
 }
 
 //各种状态的座位的count
 $purchaseResult = $conn -> query("SELECT COUNT(*) AS total FROM ticket_status WHERE status=\"purchase\"");
 $reservedResult = $conn -> query("SELECT COUNT(*) AS total FROM ticket_status WHERE status=\"reserved\"");
 $freeResult = $conn -> query("SELECT COUNT(*) AS total FROM ticket_status WHERE status=\"free\"");
+$conn->close();
 
 if($purchaseResult){
     $purchaseCount = mysqli_fetch_array($purchaseResult);
@@ -65,11 +74,11 @@ if($freeResult){
     $freeCount = mysqli_fetch_array($freeResult);
     $countResult["free"] = $freeCount['total'];
 }
-$countResult["results"] = json_encode($data);
-$countResult["user_id"]=json_encode($user_id_array);
-$countResult["currentUser"] = $currentUser;
+$countResult["results"] = $data;
+$countResult["user_id"]= $user_id_array;
+if(isset($_SESSION['username'])) {
+    $countResult["currentUser"] = $currentUser;
+}
 echo json_encode($countResult);
-
-$conn->close();
 ?>
 

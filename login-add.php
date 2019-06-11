@@ -12,7 +12,7 @@ $password=md5($_REQUEST["password"]);
 $conn=new mysqli("127.0.0.1","root","","mysql");
 if(!$conn)
 {
-    die('connection_error'.mysql_error());
+    die('connection_error'.mysqli_error());
 }
 $dbusername=null;
 $dbpassword=null;
@@ -47,7 +47,8 @@ $result=$conn->query("select * from user_name_pwd where user_name='$user_name';"
 
  ?>
  <script type="text/javascript">
- window.location.href="main.html";
+     alert("login success!");
+     window.location.href="main.html";
  </script>
  <?php
  }
