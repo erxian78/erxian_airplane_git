@@ -1,4 +1,5 @@
 <?php
+
 if(isset($_GET["row"])){
     $row=$_GET["row"];
 }
@@ -7,6 +8,11 @@ if(isset($_GET["column"])){
 }
 session_start();
 if(isset($_SESSION['username'])) {
+//    if($_SERVER["HTTPS"] != "on")
+//    {
+//        header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
+//        //exit();
+//    }
     $currentUser = $_SESSION["username"];
     if (isset($_SESSION['expiretime'])) {
         if ($_SESSION['expiretime'] < time()) {

@@ -6,7 +6,11 @@
 </head>
 <body>
 <?php
-
+//if($_SERVER["HTTPS"] != "on")
+//{
+//    header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
+//    exit();
+//}
 $user_name=$_REQUEST["user_name"];
 $password=md5($_REQUEST["password"]);
 $conn=new mysqli("127.0.0.1","root","","mysql");

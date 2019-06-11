@@ -9,7 +9,11 @@
 session_start();
 $user_name=$_REQUEST["user_name"];
 $password=md5($_REQUEST["password"]);
-
+if($_SERVER["HTTPS"] != "on")
+{
+    header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
+    exit();
+}
 $conn=new mysqli("127.0.0.1","root","","mysql");
 if(!$conn)
 {

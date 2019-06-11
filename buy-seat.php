@@ -1,4 +1,9 @@
 <?php
+//if($_SERVER["HTTPS"] != "on")
+//{
+//    header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
+//    exit();
+//}
 session_start();
 if(isset($_SESSION['expiretime'])) {
     if($_SESSION['expiretime'] < time()) {
@@ -15,6 +20,9 @@ else {
     $_SESSION['expiretime'] = time() + 120;
 }
 $_POST = array();
+if ('POST' == $_SERVER['REQUEST_METHOD']) {
+    parse_str(file_get_contents('php://input'), $_POST);
+}
 $user_id=$_POST["user_id"];
 $reserved_num=(int)$_POST["reserved_num"];
 $conn=new mysqli("127.0.0.1","root","","mysql");
