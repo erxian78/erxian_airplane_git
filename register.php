@@ -14,7 +14,7 @@ if($_SERVER["HTTPS"] != "on")
     header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
     exit();
 }
-$conn=new mysqli("127.0.0.1","root","","mysql");
+$conn = new mysqli("localhost", "s261423", "subgreds", "s261423");
 if(!$conn)
 {
     die('connection_error'.mysqli_error());
@@ -44,7 +44,7 @@ $conn->close();
 ?>
 <script type="text/javascript">
     alert("register success!");
-    window.location.href="main.html";
+    window.location.href="index.php";
     </script>
 </body>
     </html>

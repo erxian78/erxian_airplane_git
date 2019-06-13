@@ -8,11 +8,11 @@ if(isset($_GET["column"])){
 }
 session_start();
 if(isset($_SESSION['username'])) {
-//    if($_SERVER["HTTPS"] != "on")
-//    {
-//        header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
-//        //exit();
-//    }
+    if($_SERVER["HTTPS"] != "on")
+    {
+        header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
+        //exit();
+    }
     $currentUser = $_SESSION["username"];
     if (isset($_SESSION['expiretime'])) {
         if ($_SESSION['expiretime'] < time()) {
@@ -28,7 +28,7 @@ if(isset($_SESSION['username'])) {
     }
 }
 
-$conn=new mysqli("127.0.0.1","root","","mysql");
+$conn = new mysqli("localhost", "s261423", "subgreds", "s261423");
 if(!$conn)
 {
     die('connection_error'.mysqli_error());

@@ -1,3 +1,19 @@
+<?php
+
+$redirect = false;
+    if (isset($_SERVER['HTTPS'])) {
+        if ($_SERVER['HTTPS'] != "on") {
+            $redirect = true;
+        }
+    } else {
+        $redirect = true;
+    }
+    if ($redirect) {
+        header("Location: https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+        exit;
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,11 +33,6 @@
 </div>
 <script type="text/javascript" src="jquery.min.js"></script>
 <script type="text/javascript">
-    $.ajax({
-        url: "configure.php",
-        type:'POST'
-        }
-    )
     let self_reserve_cnt = 0;
     let current_user_id=0;
     let m = 11;
@@ -53,7 +64,7 @@
                 for(let j = 1;j < n;j ++){
                     let color;
                     let cursor = "pointer";
-                    let currentIndex = (i - 1) * 6 + j - 1;
+                    let currentIndex = (i - 1) * (n-1) + j - 1;
                     switch (seatResults[currentIndex]) {
                         case "free":
                             color = "#66bb6a";
@@ -107,7 +118,7 @@
                 type:'POST',
             }
         )
-        window.location.href="main.html";
+        window.location.href="index.php";
     };
 
     reserveSeat = (self) => {
@@ -186,11 +197,11 @@
             success: function (data) {
                 if(data === 'error'){
                     alert("buying request has been rejected!");
-                   // window.location.href = 'main.html';
+                   // window.location.href = 'main.php';
                 }
                 else if (data === 'success') {
                     alert("buying success！");
-                    //window.location.href = 'main.html';
+                    //window.location.href = 'main.php';
                 }
                 else if(data === 'buying_by_other')
                 {
@@ -202,11 +213,11 @@
                     windows.location.href='add_user.html';
                     return;
                 }
-                window.location.href = 'main.html';
+                window.location.href = 'index.php';
             },
             error: function (error) {
                 alert("Sorry, system has occured some error");
-                window.location.href='main.html';
+                window.location.href='index.php';
             }
         });
     }
@@ -216,7 +227,7 @@
             alert("Please log in first!");
             return;
         }
-        window.location.href="main.html";
+        window.location.href="index.php";
     }
 
 </script>

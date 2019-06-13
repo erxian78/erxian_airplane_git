@@ -1,9 +1,9 @@
 <?php
 $m=11;
 $n=7;
-$current_m=11;
-$current_n=7;
-$conn=mysqli_connect("127.0.0.1","root","","mysql");
+$current_m=0;
+$current_n=0;
+$conn=new mysqli("localhost","s261423","subgreds","s261423");
 if(!$conn)
 {
     die('connection_error'.mysqli_error());

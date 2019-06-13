@@ -1,9 +1,9 @@
 <?php
-//if($_SERVER["HTTPS"] != "on")
-//{
-//    header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
-//    exit();
-//}
+if($_SERVER["HTTPS"] != "on")
+{
+    header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
+    exit();
+}
 session_start();
 if(isset($_SESSION['expiretime'])) {
     if($_SESSION['expiretime'] < time()) {
@@ -25,31 +25,39 @@ if ('POST' == $_SERVER['REQUEST_METHOD']) {
 }
 $user_id=$_POST["user_id"];
 $reserved_num=(int)$_POST["reserved_num"];
-$conn=new mysqli("127.0.0.1","root","","mysql");
+$conn = new mysqli("localhost", "s261423", "subgreds", "s261423");
 if(!$conn)
 {
     die('connection_error'.mysqli_error());
 }
 //
-$result=$conn->query("select count(*)  as cnt from ticket_status where user_id='$user_id' and status='reserved'");
-if($result) {
-    $row=mysqli_fetch_array($result);
-    $cnt = $row["cnt"];
-}
-
-if($cnt!=$reserved_num)
-{
-    $result=$conn->query("UPDATE ticket_status SET status='free',user_id=NULL where status='reserved' and user_id='$user_id'");
-    echo "buying_by_other";
+try{
+    $conn->autocommit(false);
+    $result=$conn->query("select * from ticket_status where user_id='$user_id' and status='reserved' for update ");
+    if($result) {
+        $row=mysqli_fetch_array($result);
+        $cnt = mysqli_num_rows($result);
+    }
+    if($cnt!=$reserved_num)
+    {
+        $result=$conn->query("UPDATE ticket_status SET status='free',user_id=NULL where status='reserved' and user_id='$user_id'");
+        echo "buying_by_other";
+        $conn->commit();
+        $conn->close();
+        return;
+    }
+    $result=$conn->query("UPDATE ticket_status SET status='purchase' where user_id='$user_id' and status='reserved'");
+    if($result)
+    {
+        echo "success";
+    }
+    else echo"error";
+    $conn->commit();
     $conn->close();
-    return;
+}catch (Exception $e){
+    $conn->rollback();
+    $conn->close();
+    echo "error";
 }
-$result=$conn->query("UPDATE ticket_status SET status='purchase' where user_id='$user_id' and status='reserved'");
-if($result)
-{
-    echo "success";
-}
-else echo"error";
 
-$conn->close();
 ?>
