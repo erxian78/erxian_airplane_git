@@ -15,6 +15,7 @@ if($_SERVER["HTTPS"] != "on")
     exit();
 }
 $conn = new mysqli("localhost", "s261423", "subgreds", "s261423");
+//$conn= new mysqli("127.0.0.1", "root", "", "airplane");
 if(!$conn)
 {
     die('connection_error'.mysqli_error());

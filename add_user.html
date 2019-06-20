@@ -6,23 +6,35 @@
     <title>Login</title>
 </head>
 <body>
-<div class="welcome">
-    <h1>Welcome to seat-reservation system!</h1>
-</div>
-<div class="login-form">
-    <form action="login-add.php" method="post" onsubmit="return enter()">
-        <p>
-            <span>Username (email)</span><input type="email" name="user_name" id="user_name">
-        </p>
-        <p>
-            <span>Password</span><input type="password" name="password" id="password">
-        </p>
-        <div style="margin-top:60px;padding-left: 30px">
-            <input type="submit" value="Login" class="submit-button" id="submit-button">
-            <br />
-            <a href="register.html">Register</a>
-        </div>
-    </form>
+<noscript>
+    Please enable JavaScript
+
+    <style>
+        #reservation {
+            display: none;
+        }
+    </style>
+</noscript>
+
+<div id="reservation">
+    <div class="welcome">
+        <h1>Welcome to seat-reservation system!</h1>
+    </div>
+    <div class="login-form">
+        <form action="login-add.php" method="post" onsubmit="return enter()">
+            <p>
+                <span>Username (email)</span><input type="email" name="user_name" id="user_name">
+            </p>
+            <p>
+                <span>Password</span><input type="password" name="password" id="password">
+            </p>
+            <div style="margin-top:60px;padding-left: 30px">
+                <input type="submit" value="Login" class="submit-button" id="submit-button">
+                <br />
+                <a href="register.html">Register</a>
+            </div>
+        </form>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -43,5 +55,7 @@
     }
 
 </script>
+<script type="text/javascript" src="functions.js"></script>
+<script type="text/javascript" defer>checkCookies()</script>
 </body>
 </html>

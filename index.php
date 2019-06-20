@@ -22,22 +22,50 @@ $redirect = false;
     <title>main_page</title>
 </head>
 <body>
-<div class="header">
-    <h2>Welcome to seat-reservation system</h2>
-</div>
-<div class="nav">
-    <div>
-        <p id="welcome">Please sign in!</p>
-        <a id="login"  href="add_user.html">Login</a>
+<noscript>
+    Please enable JavaScript
+
+    <style>
+        #reservation {
+            display: none;
+        }
+    </style>
+</noscript>
+
+<div id="reservation">
+    <div class="header">
+        <h2>Welcome to seat-reservation system</h2>
+    </div>
+    <div class="nav">
+        <div>
+            <p id="welcome">Please sign in!</p>
+            <a id="login"  href="add_user.html">Login</a>
+        </div>
+    </div>
+    <div class="operations">
+        <div style="text-align: left;">
+            <p><span class="color-info" style="background: #66bb6a;"></span><span>free</span></p>
+            <p><span class="color-info" style="background: #ef5350;"></span>purchased</p>
+            <p><span class="color-info" style="background: #ffee58;"></span>reserved</p>
+            <p><span class="color-info" style="background: #ffa726;"></span>reserved by others</p>
+        </div>
+        <button onclick="buySeat()">Buy</button>
+        <button onclick="Update()">Update</button>
     </div>
 </div>
+
 <script type="text/javascript" src="jquery.min.js"></script>
-<script type="text/javascript">
+<script type="text/javascript" src="functions.js"></script>
+<script type="text/javascript"> 
     let self_reserve_cnt = 0;
     let current_user_id=0;
     let m = 11;
     let n = 7;
     $(function(){
+        if (!areCookiesEnabled()) {
+            return;
+        }
+
         $.get("seat.php", function (data) {
             let allResults = JSON.parse(data);
             console.log(allResults);
@@ -91,12 +119,12 @@ $redirect = false;
                 seatString += "</tr>";
             }
             seatString += "</table>";
-            $("body").append(seatString);
+            $("#reservation").append(seatString);
             let infoString = "<div class='info'><p>The total number of seats:&nbsp;<span>" + seatResults.length  + "</span></p>";
             infoString += "<p>The total number of purchased:&nbsp;<span>" + allResults.purchase + "</span></p>";
             infoString += "<p>The total number of reserved:&nbsp;<span>" + allResults.reserved + "</span></p>";
             infoString += "<p>The total number of free:&nbsp;<span>" + allResults.free + "</span></p></div>";
-            $("body").append(infoString);
+            $("#reservation").append(infoString);
             if(allResults.currentUser) {
                 //从起始位置到终止位置的内容, 但它去除Html标签
                 $("#welcome")[0].innerText = "Welcome\n " + allResults.currentUser;
@@ -136,7 +164,7 @@ $redirect = false;
         $.ajax({
             url: "update-seat.php",
             type: 'POST',
-            data: { row: row, column: column, user_id: user_id , status: "reserved" },
+            data: { row: row, column: column, user_id: user_id , status: "reserved",bgColor: bgColor},
             success: function (data) {
                 console.log(data);
                 if(data === 'error'){
@@ -168,7 +196,11 @@ $redirect = false;
                         $('.info > p > span')[2].innerText = reserveCount + 1;
                         $('.info > p > span')[3].innerText = freeCount - 1;
                     }
-                } else if (data === 'timeout') {
+                }
+                else if (data==='orange'){
+                    alert("free the seat successfully,but other has reserved it");
+                    $(`#${self.id}`)[0].bgColor = '#ffa726';
+                }else if (data === 'timeout') {
                     alert("timeout for the user!");
                     window.location.href="add_user.html";
                 }
@@ -231,15 +263,6 @@ $redirect = false;
     }
 
 </script>
-<div class="operations">
-    <div style="text-align: left;">
-        <p><span class="color-info" style="background: #66bb6a;"></span><span>free</span></p>
-        <p><span class="color-info" style="background: #ef5350;"></span>purchased</p>
-        <p><span class="color-info" style="background: #ffee58;"></span>reserved</p>
-        <p><span class="color-info" style="background: #ffa726;"></span>reserved by others</p>
-    </div>
-    <button onclick="buySeat()">Buy</button>
-    <button onclick="Update()">Update</button>
-</div>
+<script type="text/javascript" defer>checkCookies()</script>
 </body>
 </html>

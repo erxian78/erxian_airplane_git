@@ -24,6 +24,7 @@ if ($redirect) {
 $user_name=$_REQUEST["user_name"];
 $password=md5($_REQUEST["password"]);
 $conn = new mysqli("localhost", "s261423", "subgreds", "s261423");
+//$conn= new mysqli("127.0.0.1", "root", "", "airplane");
 if(!$conn)
 {
     die('connection_error'.mysqli_error());

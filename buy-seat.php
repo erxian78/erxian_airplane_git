@@ -23,9 +23,14 @@ $_POST = array();
 if ('POST' == $_SERVER['REQUEST_METHOD']) {
     parse_str(file_get_contents('php://input'), $_POST);
 }
-$user_id=$_POST["user_id"];
-$reserved_num=(int)$_POST["reserved_num"];
-$conn = new mysqli("localhost", "s261423", "subgreds", "s261423");
+$user_id=check_input($_POST["user_id"]);
+$reserved_num=check_input((int)$_POST["reserved_num"]);
+//$user_id=$_POST["user_id"];
+//$reserved_num=(int)$_POST["reserved_num"];
+global $conn;
+$conn= new mysqli("localhost", "s261423", "subgreds", "s261423");
+//$conn = new mysqli("127.0.0.1", "root", "", "airplane");
+
 if(!$conn)
 {
     die('connection_error'.mysqli_error());
@@ -59,5 +64,22 @@ try{
     $conn->close();
     echo "error";
 }
-
+function check_input($value)
+{
+    //$conn= new mysqli("localhost", "s261423", "subgreds", "s261423");
+    $value = strip_tags($value);
+    $value = htmlentities($value);
+    // remove slash
+    if (get_magic_quotes_gpc())
+    {
+        $value = stripslashes($value);
+    }
+// add '' on string
+    if (!is_numeric($value))
+    {
+        $value =mysqli_real_escape_string($GLOBALS['conn'],$value);
+    }
+    return $value;
+}
 ?>
+
